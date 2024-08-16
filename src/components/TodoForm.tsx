@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Switch } from "antd";
+import { Form, Input, Button, Switch } from "antd";
 import { addTodo, editTodo } from "../api/todos";
 
 const TodoForm: React.FC<{ todo?: any; refreshTodos: () => void }> = ({
@@ -26,6 +26,9 @@ const TodoForm: React.FC<{ todo?: any; refreshTodos: () => void }> = ({
       <Form.Item label="Completed">
         <Switch checked={completed} onChange={setCompleted} />
       </Form.Item>
+      <Button type="primary" htmlType="submit">
+        Save
+      </Button>
     </Form>
   );
 };

@@ -1,19 +1,17 @@
 import React from "react";
-import { List, Button, Modal, Checkbox } from "antd";
+import { List, Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { deleteTodo, editTodo } from "../api/todos";
 import TodoForm from "./TodoForm";
 
 const { confirm } = Modal;
 
-interface CheckboxChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-  target: HTMLInputElement & { checked: boolean };
+interface TodoItemProps {
+  todo: any;
+  refreshTodos: () => void;
 }
 
-const TodoItem: React.FC<{ todo: any; refreshTodos: () => void }> = ({
-  todo,
-  refreshTodos,
-}) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todo, refreshTodos }) => {
   const handleDelete = async () => {
     await deleteTodo(todo.id);
     refreshTodos();
@@ -29,10 +27,10 @@ const TodoItem: React.FC<{ todo: any; refreshTodos: () => void }> = ({
     });
   };
 
-  // const handleCheck = async (e: CheckboxChangeEvent) => {
-  //   await editTodo(todo.id, { ...todo, completed: e.target.checked });
-  //   refreshTodos();
-  // };
+  const handleComplete = async () => {
+    await editTodo(todo.id, { ...todo, completed: !todo.completed });
+    refreshTodos();
+  };
 
   const showDeleteConfirm = () => {
     confirm({
@@ -57,12 +55,23 @@ const TodoItem: React.FC<{ todo: any; refreshTodos: () => void }> = ({
         <Button type="dashed" danger onClick={showDeleteConfirm}>
           Delete
         </Button>,
+        <Button onClick={handleComplete}>
+          {todo.completed ? "Complete" : "Complete"}
+        </Button>,
       ]}
     >
-      <Checkbox checked={todo.completed} />
       <List.Item.Meta
-        title={todo.title}
-        description={`Completed: ${todo.completed}`}
+        title={
+          <span
+            style={{
+              textDecoration: todo.completed ? "line-through" : "none",
+              color: todo.completed ? "gray" : "black",
+              pointerEvents: todo.completed ? "none" : "auto",
+            }}
+          >
+            {todo.title}
+          </span>
+        }
       />
     </List.Item>
   );

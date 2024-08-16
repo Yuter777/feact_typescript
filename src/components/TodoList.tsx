@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List } from "antd";
+import { List, Pagination } from "antd";
 import TodoItem from "./TodoItem";
 import { getTodos } from "../api/todos";
 
@@ -10,6 +10,8 @@ interface TodoListProps {
 
 const TodoList: React.FC<TodoListProps> = ({ showCompleted, searchQuery }) => {
   const [todos, setTodos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10); // 7 items per page
 
   useEffect(() => {
     fetchTodos();
@@ -26,12 +28,30 @@ const TodoList: React.FC<TodoListProps> = ({ showCompleted, searchQuery }) => {
     });
     setTodos(filteredTodos);
   };
+  const paginatedTodos = todos.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <List
-      dataSource={todos}
-      renderItem={(todo) => <TodoItem todo={todo} refreshTodos={fetchTodos} />}
-    />
+    <>
+      <List
+        dataSource={paginatedTodos}
+        renderItem={(todo) => (
+          <TodoItem todo={todo} refreshTodos={fetchTodos} />
+        )}
+      />
+      <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={todos.length}
+        onChange={handlePageChange}
+      />
+    </>
   );
 };
 

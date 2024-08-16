@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Flex, Modal } from "antd";
 import TodoList from "../components/TodoList";
 import Filter from "../components/Filter";
 import Search from "../components/Search";
@@ -18,10 +18,13 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={handleAddTodo}>
-        Add Todo
-      </Button>
-      <Search onSearch={setSearchQuery} />
+      <h2 className="center">TypeScript Todo</h2>
+      <Flex gap="small" className="padded-container">
+        <Search onSearch={setSearchQuery} />
+        <Button type="primary" onClick={handleAddTodo}>
+          Add Todo
+        </Button>
+      </Flex>
       <Filter onFilterChange={setShowCompleted} />
       <TodoList showCompleted={showCompleted} searchQuery={searchQuery} />
     </div>

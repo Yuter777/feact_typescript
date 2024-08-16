@@ -10,6 +10,10 @@
   background-color: #ff4d4f;
   border-color: #ff4d4f;
 }
+/* src/index.css */
+.padded-container {
+  padding: 20px;
+}
 
 .ant-modal-confirm-title {
   font-weight: bold;
@@ -17,4 +21,10 @@
 
 .ant-modal-confirm-content {
   color: #faad14;
+}
+
+.center {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 2em;
 }
